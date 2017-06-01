@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Render3D", "Render3D\Render3D.vcproj", "{4B3AC050-7B6E-40A1-9B0E-43E2F3AC77FA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolarSystem", "SolarSystem\SolarSystem.vcproj", "{E8AA10BD-1B76-4548-AFCA-918359E965A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B3AC050-7B6E-40A1-9B0E-43E2F3AC77FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B3AC050-7B6E-40A1-9B0E-43E2F3AC77FA}.Debug|Win32.Build.0 = Debug|Win32
+		{4B3AC050-7B6E-40A1-9B0E-43E2F3AC77FA}.Release|Win32.ActiveCfg = Release|Win32
+		{4B3AC050-7B6E-40A1-9B0E-43E2F3AC77FA}.Release|Win32.Build.0 = Release|Win32
+		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Debug|Win32.Build.0 = Debug|Win32
+		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Release|Win32.ActiveCfg = Release|Win32
+		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
