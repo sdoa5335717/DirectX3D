@@ -5,6 +5,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Render3D", "Render3D\Render
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolarSystem", "SolarSystem\SolarSystem.vcproj", "{E8AA10BD-1B76-4548-AFCA-918359E965A2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Stranded", "Stranded\Stranded.vcproj", "{8D1D88A0-BF8C-4B07-8B1F-FE697779F8AA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\GameEngine.vcproj", "{9AA4E83B-7DD3-4505-8584-C6BF64BAF3BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +23,14 @@ Global
 		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Debug|Win32.Build.0 = Debug|Win32
 		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Release|Win32.ActiveCfg = Release|Win32
 		{E8AA10BD-1B76-4548-AFCA-918359E965A2}.Release|Win32.Build.0 = Release|Win32
+		{8D1D88A0-BF8C-4B07-8B1F-FE697779F8AA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8D1D88A0-BF8C-4B07-8B1F-FE697779F8AA}.Debug|Win32.Build.0 = Debug|Win32
+		{8D1D88A0-BF8C-4B07-8B1F-FE697779F8AA}.Release|Win32.ActiveCfg = Release|Win32
+		{8D1D88A0-BF8C-4B07-8B1F-FE697779F8AA}.Release|Win32.Build.0 = Release|Win32
+		{9AA4E83B-7DD3-4505-8584-C6BF64BAF3BE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9AA4E83B-7DD3-4505-8584-C6BF64BAF3BE}.Debug|Win32.Build.0 = Debug|Win32
+		{9AA4E83B-7DD3-4505-8584-C6BF64BAF3BE}.Release|Win32.ActiveCfg = Release|Win32
+		{9AA4E83B-7DD3-4505-8584-C6BF64BAF3BE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
