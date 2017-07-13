@@ -6,6 +6,12 @@
 #define GM_OK		 0
 #define GM_FAIL		 1
 
+// Light type defines.
+#define LIGHT_POINT        1
+#define LIGHT_DIRECTIONAL  2
+#define LIGHT_SPOT         3
+
+
 #define WinHWND HWND
 
 typedef long VextexType;

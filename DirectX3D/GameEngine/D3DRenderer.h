@@ -35,6 +35,14 @@ public:
 
 	int Render(UINT staticID);
 
+	void SetMaterial(stMaterial* mat);
+
+	void SetLight(stLight* light, int index);
+
+	void DisableLight(int index);
+
+
+
 private:
 	void OneTimeInit();
 

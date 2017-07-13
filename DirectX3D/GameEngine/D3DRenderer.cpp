@@ -508,3 +508,88 @@ int CD3DRenderer::Render(UINT staticID)
 	}
 	return GM_OK;
 }
+
+void CD3DRenderer::SetMaterial(stMaterial* mat)
+{
+	if (!mat || !m_pDevice)
+	{
+		return;
+	}
+
+	D3DMATERIAL9 m = { mat->diffuseR, mat->diffuseG, mat->diffuseB, mat->diffuseA,
+					   mat->ambientR, mat->ambientG, mat->ambientB, mat->ambientA,
+					   mat->specularR, mat->specularG, mat->specularB, mat->specularA,
+					   mat->emissiveR, mat->emissiveG, mat->ambientB, mat->emissiveA,
+						mat->power };
+
+	m_pDevice->SetMaterial(&m);
+}
+
+void CD3DRenderer::SetLight(stLight* light, int index)
+{
+	if (!light || !m_pDevice || index < 0)
+	{
+		return;
+	}
+
+	D3DLIGHT9 l;
+	l.Ambient.a = light->ambientA;
+	l.Ambient.r = light->ambientR;
+	l.Ambient.g = light->ambientG;
+	l.Ambient.b = light->ambientB;
+
+	l.Attenuation0 = light->attenuation0;
+	l.Attenuation1 = light->attenuation1;
+	l.Attenuation2 = light->attenuation2;
+
+	l.Diffuse.a = light->diffuseA;
+	l.Diffuse.r = light->diffuseR;
+	l.Diffuse.g = light->diffuseG;
+	l.Diffuse.b = light->diffuseB;
+
+	l.Direction.x = light->dirX;
+	l.Direction.y = light->dirY;
+	l.Direction.z = light->dirZ;
+
+	l.Falloff = light->falloff;
+	l.Phi =light->phi;
+
+	l.Position.x = light->posX;
+	l.Position.y = light->posY;
+	l.Position.z = light->posZ;
+
+	l.Range = light->range;
+
+	l.Specular.a = light->specularA;
+	l.Specular.r = light->specularR;
+	l.Specular.g = light->specularG;
+	l.Specular.b = light->specularB;
+
+	l.Theta = light->theta;
+
+	if (light->type == LIGHT_POINT)
+	{
+		l.Type = D3DLIGHT_POINT;
+	}
+	else if (light->type == LIGHT_SPOT)
+	{
+		l.Type = D3DLIGHT_SPOT;
+	}
+	else
+	{
+		l.Type = D3DLIGHT_DIRECTIONAL;
+	}
+
+	m_pDevice->SetLight(index, &l);
+	m_pDevice->LightEnable(index, TRUE);
+}
+
+void CD3DRenderer::DisableLight(int index)
+{
+	if (!m_pDevice)
+	{
+		return;
+	}
+
+	m_pDevice->LightEnable(index, FALSE);
+}

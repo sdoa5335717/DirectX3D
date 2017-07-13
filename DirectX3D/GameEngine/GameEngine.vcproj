@@ -235,6 +235,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\light.h"
+				>
+			</File>
+			<File
+				RelativePath=".\material.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RenderInterface.h"
 				>
 			</File>
