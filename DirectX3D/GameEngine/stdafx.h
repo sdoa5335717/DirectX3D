@@ -13,5 +13,5 @@
 #include <d3d9.h>
 #include <d3dx9.h>
 
-
 // TODO: 在此处引用程序需要的其他头文件
+#include <strsafe.h>
