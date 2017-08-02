@@ -120,23 +120,22 @@ bool CGUISystem::AddStaticText(
 	m_controls[m_totalControls].m_yPos = y;           // 控件Y坐标
 	m_controls[m_totalControls].m_listID = fontID;    // 字体类型ID
 
-	// 获取文本字节长度
+	// 获取文本字符个数
 	int len = 0;//strlen(text);
 	StringCchLength(text, STRSAFE_MAX_CCH, (size_t*)&len);
 	// 开辟存放文本字符的内存块
-	m_controls[m_totalControls].m_text = new char[len + 1];
-
-	if (!m_controls[m_totalControls].m_text)
-	{
-		return false;
-	}
-
+#ifdef UNICODE
+	m_controls[m_totalControls].m_text = new TCHAR[len + 1];
+	if (!m_controls[m_totalControls].m_text) return false;
+	memset(m_controls[m_totalControls].m_text, 0, sizeof(TCHAR)*(len+1));
 	// 将文本text复制到该控件对应的成员变量中
-	memcpy(m_controls[m_totalControls].m_text, text, len); 
-
-	// 在该字符数组尾元素添加一结束符
-	m_controls[m_totalControls].m_text[len] = '\0';
-
+	memcpy(m_controls[m_totalControls].m_text, text, len*sizeof(TCHAR)); 
+#else 
+	m_controls[m_totalControls].m_text = new char[len + 1];
+	if (!m_controls[m_totalControls].m_text) return false;
+	memset(m_controls[m_totalControls].m_text, 0, sizeof(char)*len);
+	memcpy(m_controls[m_totalControls].m_text, text, len*sizeof(char)); 
+#endif
 	// 控件对象数量递增
 	m_totalControls++;
 

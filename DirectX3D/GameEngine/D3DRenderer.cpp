@@ -58,7 +58,53 @@ CD3DRenderer::~CD3DRenderer()
 	ShutDown();
 }
 
-BOOL CD3DRenderer::Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen)
+D3DMULTISAMPLE_TYPE GetD3DMultiSampleType(LPDIRECT3D9 d3d,
+										  UGP_MS_TYPE ms, D3DDEVTYPE type, D3DFORMAT format, bool fullscreen)
+{
+	D3DMULTISAMPLE_TYPE t = D3DMULTISAMPLE_NONE;
+
+	if(d3d)
+	{
+		switch(ms)
+		{
+		case UGP_MS_NONE:
+			t = D3DMULTISAMPLE_NONE;
+			break;
+
+		case UGP_MS_SAMPLES_2:
+			if(d3d->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+				type, format, !fullscreen, D3DMULTISAMPLE_2_SAMPLES,
+				NULL) == D3D_OK) t = D3DMULTISAMPLE_2_SAMPLES;
+			break;
+
+		case UGP_MS_SAMPLES_4:
+			if(d3d->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+				type, format, !fullscreen, D3DMULTISAMPLE_2_SAMPLES,
+				NULL) == D3D_OK) t = D3DMULTISAMPLE_4_SAMPLES;
+			break;
+
+		case UGP_MS_SAMPLES_8:
+			if(d3d->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+				type, format, !fullscreen, D3DMULTISAMPLE_8_SAMPLES,
+				NULL) == D3D_OK) t = D3DMULTISAMPLE_8_SAMPLES;
+			break;
+
+		case UGP_MS_SAMPLES_16:
+			if(d3d->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+				type, format, !fullscreen, D3DMULTISAMPLE_16_SAMPLES,
+				NULL) == D3D_OK) t = D3DMULTISAMPLE_16_SAMPLES;
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	return t;
+}
+
+
+BOOL CD3DRenderer::Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen, UGP_MS_TYPE ms)
 {
 	ShutDown();
 
@@ -124,6 +170,8 @@ BOOL CD3DRenderer::Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen)
 	Params.BackBufferCount = 1;
 	Params.EnableAutoDepthStencil = TRUE;
 	Params.AutoDepthStencilFormat = D3DFMT_D16;
+	Params.MultiSampleType = GetD3DMultiSampleType(m_pDirect3D, ms,
+		D3DDEVTYPE_HAL, mode.Format, m_fullScreen);
 
 	m_nSrceenWidth = w;
 	m_nScreenHeight= h;
@@ -396,7 +444,9 @@ int CD3DRenderer::Render(UINT staticID)
 			m_pDevice->SetIndices(m_staticBufferList[staticID].ibPtr);
 		}
 
-		m_pDevice->SetStreamSource(0, m_staticBufferList[staticID].vbPtr, 0, m_staticBufferList[staticID].stride);
+		HRESULT hr = m_pDevice->SetStreamSource(0, m_staticBufferList[staticID].vbPtr, 0, m_staticBufferList[staticID].stride);
+
+		m_pDevice->SetFVF(m_staticBufferList[staticID].fvf);
 
 		m_numActiveStaticBuffer = staticID;
 
@@ -492,9 +542,13 @@ int CD3DRenderer::Render(UINT staticID)
 			}
 		case TRIANGLE_STRIP:
 			{
-				if (FAILED(m_pDevice->DrawPrimitive(
+				HRESULT hr = m_pDevice->DrawPrimitive(
 					D3DPT_TRIANGLESTRIP, 0,
-					(int)(m_staticBufferList[staticID].numVerts/2))))
+					(int)(m_staticBufferList[staticID].numVerts/2));
+				if (FAILED(hr))
+				/*if (FAILED(m_pDevice->DrawPrimitive(
+					D3DPT_TRIANGLESTRIP, 0,
+					(int)(m_staticBufferList[staticID].numVerts/2))))*/
 				{
 					return GM_FAIL;
 				}
@@ -860,10 +914,17 @@ int CD3DRenderer::AddTexture2D(
 	}
 
 	// 开辟fileName的内存区域
-	m_textureList[index].fileName = new char[len];
-
+#ifdef UNICODE
+	m_textureList[index].fileName = new TCHAR[len+1];
+	memset(m_textureList[index].fileName, 0, sizeof(TCHAR)*(len+1));
 	// 将图像文件名复制到 m_textureList[index].fileName
+	memcpy(m_textureList[index].fileName, file, len*sizeof(TCHAR));
+#else
+	m_textureList[index].fileName = new char[len+1];
+	memset(m_textureList[index].fileName, 0, sizeof(char)*(len+1));
 	memcpy(m_textureList[index].fileName, file, len);
+#endif
+	
 
 	D3DCOLOR colorkey = 0xff000000;
 	D3DXIMAGE_INFO info;
@@ -935,11 +996,13 @@ void CD3DRenderer::SetMultiTexture()
 void CD3DRenderer::ApplyTexture(int index, int texId)
 {
 	if(!m_pDevice) return;
-
+	HRESULT hr = S_OK;
 	if(index < 0 || texId < 0)
-		m_pDevice->SetTexture(0, NULL);
+		hr = m_pDevice->SetTexture(0, NULL);
 	else
-		m_pDevice->SetTexture(0, m_textureList[texId].image);
+		hr = m_pDevice->SetTexture(0, m_textureList[texId].image);
+
+	//OutputDebugString(L"Apply Texture\n");
 }
 // 保存屏幕截图
 #ifdef UNICODE
@@ -1023,10 +1086,10 @@ bool CD3DRenderer::AddGUIBackdrop(int guiId, char *fileName)
 	// 填充GUI顶点结构数组
 	stGUIVertex obj[] =
 	{
-		{(float)m_screenWidth, 0, 0, 1, col, 1, 0},
-		{(float)m_screenWidth, (float)m_screenHeight, 0, 1, col, 1, 1},
-		{0, 0, 0, 1, col, 0, 0},
 		{0, (float)m_screenHeight, 0, 1, col, 0, 1},
+		{0, 0, 0, 1, col, 0, 0},
+		{(float)m_screenWidth, (float)m_screenHeight, 0, 1, col, 1, 1},
+		{(float)m_screenWidth, 0, 0, 1, col, 1, 0}
 	};
 
 	// 创建静态缓存到链表中
@@ -1147,7 +1210,7 @@ void CD3DRenderer::ProcessGUI(
 	{
 		ApplyTexture(0, backDrop->m_upTex);  // 设置背景图纹理
 		Render(backDrop->m_listID);          // 绘制该对象纹理
-		ApplyTexture(0, -1);                 // ??
+		//ApplyTexture(0, -1);                 // ??
 	}
 
 	// Initial button state.
@@ -1171,15 +1234,9 @@ void CD3DRenderer::ProcessGUI(
 		case UGP_GUI_STATICTEXT:
 			// 绘制该文本
 		{
-#ifdef UNICODE
-			USES_CONVERSION;
-			TCHAR* pText = A2W(pCnt->m_text);
-			DisplayText(pCnt->m_listID, pCnt->m_xPos, pCnt->m_yPos,
-				pCnt->m_color, pText);
-#else
 			DisplayText(pCnt->m_listID, pCnt->m_xPos, pCnt->m_yPos,
 				pCnt->m_color, pCnt->m_text);
-#endif
+
 			break;
 		}
 			// 按钮控件
@@ -1338,4 +1395,67 @@ void CD3DRenderer::DisplayText(int id, long x, long y,
 	va_end(argList);
 	m_fonts[id]->DrawText(NULL, message, -1, &FontPosition,
 		DT_SINGLELINE, color);
+}
+
+void CD3DRenderer::EnableFog(float start, float end,
+							 UGP_FOG_TYPE type, unsigned long color, bool rangeFog)
+{
+	if(!m_pDevice) return;
+
+	D3DCAPS9 caps;
+	m_pDevice->GetDeviceCaps(&caps);
+
+	// Set fog properties.
+	m_pDevice->SetRenderState(D3DRS_FOGENABLE, true);
+	m_pDevice->SetRenderState(D3DRS_FOGCOLOR, color);
+
+	// Start and end dist of fog.
+	m_pDevice->SetRenderState(D3DRS_FOGSTART, *(DWORD*)(&start));
+	m_pDevice->SetRenderState(D3DRS_FOGEND, *(DWORD*)(&end));
+
+	// Set based on type.
+	if(type == UGP_VERTEX_FOG)
+		m_pDevice->SetRenderState(D3DRS_FOGVERTEXMODE, D3DFOG_LINEAR);
+	else
+		m_pDevice->SetRenderState(D3DRS_FOGTABLEMODE, D3DFOG_LINEAR);
+
+	// Can only use if hardware supports it.
+	if(caps.RasterCaps & D3DPRASTERCAPS_FOGRANGE)
+	{
+		if(rangeFog)
+			m_pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, true);
+		else
+			m_pDevice->SetRenderState(D3DRS_RANGEFOGENABLE, false);
+	}
+}
+
+
+void CD3DRenderer::DisableFog()
+{
+	if(!m_pDevice) return;
+
+	// Set fog properties.
+	m_pDevice->SetRenderState(D3DRS_FOGENABLE, false);
+}
+
+// 设置细节映射
+void CD3DRenderer::SetDetailMapping()
+{
+	if(!m_pDevice) return;
+
+	m_pDevice->SetTextureStageState(0, D3DTSS_TEXCOORDINDEX, 0);
+	m_pDevice->SetTextureStageState(0, D3DTSS_COLOROP,
+		D3DTOP_SELECTARG1);
+	m_pDevice->SetTextureStageState(0, D3DTSS_COLORARG1,
+		D3DTA_TEXTURE);
+	m_pDevice->SetTextureStageState(0, D3DTSS_COLORARG2,
+		D3DTA_DIFFUSE);
+
+	m_pDevice->SetTextureStageState(1, D3DTSS_TEXCOORDINDEX, 1);
+	m_pDevice->SetTextureStageState(1, D3DTSS_COLOROP,
+		D3DTOP_ADDSIGNED);
+	m_pDevice->SetTextureStageState(1, D3DTSS_COLORARG1,
+		D3DTA_TEXTURE);
+	m_pDevice->SetTextureStageState(1, D3DTSS_COLORARG2,
+		D3DTA_CURRENT);
 }

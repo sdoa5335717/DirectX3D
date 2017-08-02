@@ -11,8 +11,11 @@
 struct stD3DTexture
 {
 	stD3DTexture() : fileName(0), image(0), width(0), height(0) {}
-
-	char *fileName;            // 指明文件名
+#ifdef UNICODE
+	TCHAR *fileName;            // 指明文件名
+#else
+	char *fileName;
+#endif
 	int width, height;         // 纹理的宽度和高度
 	LPDIRECT3DTEXTURE9 image;  // 纹理对象
 };
@@ -23,7 +26,7 @@ public:
 	CD3DRenderer();
 	~CD3DRenderer();
 
-	BOOL Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen);
+	BOOL Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen,UGP_MS_TYPE ms);
 
 	void ShutDown();
 
@@ -123,6 +126,19 @@ public:
 	// 绘制GUI
 	void ProcessGUI(int guiID, bool LMBDown, int mouseX,int mouseY,
 		void(*funcPtr)(int id, int state));
+
+	// 启用雾
+	virtual void EnableFog(float start, float end,
+		UGP_FOG_TYPE type, unsigned long color,
+		bool rangeFog);
+
+	// 禁用雾
+	virtual void DisableFog();
+
+	// 设置细节映射
+	void SetDetailMapping();
+
+
 private:
 	void OneTimeInit();
 

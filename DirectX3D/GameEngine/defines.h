@@ -101,6 +101,24 @@ enum FilterType
 	ANISOTROPIC_TYPE   // 各向异性纹理过滤
 };
 
+// Multi-sampling.
+enum UGP_MS_TYPE
+{
+	UGP_MS_NONE,
+	UGP_MS_SAMPLES_2,
+	UGP_MS_SAMPLES_4,
+	UGP_MS_SAMPLES_8,
+	UGP_MS_SAMPLES_16
+};
+
+// Fog.
+enum UGP_FOG_TYPE
+{
+	UGP_VERTEX_FOG,
+	UGP_PIXEL_FOG
+};
+
+
 // 用于确定GUI元素在屏幕上的位置
 #define PERCENT_OF(a, b) (int)(a * b)
 

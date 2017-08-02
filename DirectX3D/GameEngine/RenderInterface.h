@@ -40,7 +40,7 @@ public:
 		m_nScreenHeight(0), m_fNear(0), m_fFar(0) {}
 	virtual ~CRenderInterface() {};
 	// initialize render engine
-	virtual BOOL Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen) = 0;
+	virtual BOOL Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen, UGP_MS_TYPE ms) = 0;
 	// 调用一次，例如设置投影矩阵
 	virtual void OneTimeInit() = 0;
 	// 关闭清楚渲染系统
@@ -189,6 +189,14 @@ public:
 		int mouseX, int mouseY,
 		void(*funcPtr)(int id, int state)) = 0;
 	
+	// 启用雾
+	virtual void EnableFog(float start, float end,
+		UGP_FOG_TYPE type, unsigned long color,
+		bool rangeFog) = 0;
+	// 禁用雾
+	virtual void DisableFog() = 0;
+
+
 protected:
 	int m_nSrceenWidth, m_nScreenHeight;
 	BOOL m_fullScreen;

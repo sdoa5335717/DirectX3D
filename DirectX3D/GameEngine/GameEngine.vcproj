@@ -166,7 +166,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Ô´ÎÄ¼þ"
+			Name="app"
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
@@ -212,6 +212,14 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\targetver.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="interface"
@@ -219,35 +227,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\defines.h"
-				>
-			</File>
-			<File
-				RelativePath=".\engine.h"
-				>
-			</File>
-			<File
-				RelativePath=".\light.h"
-				>
-			</File>
-			<File
-				RelativePath=".\material.h"
-				>
-			</File>
-			<File
 				RelativePath=".\RenderInterface.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\structs.h"
-				>
-			</File>
-			<File
-				RelativePath=".\targetver.h"
 				>
 			</File>
 		</Filter>
@@ -278,6 +258,46 @@
 			</File>
 			<File
 				RelativePath=".\GUI.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="General"
+			>
+			<File
+				RelativePath=".\defines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\engine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\structs.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="material"
+			>
+			<File
+				RelativePath=".\light.h"
+				>
+			</File>
+			<File
+				RelativePath=".\material.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="ParticleSystems"
+			>
+			<File
+				RelativePath=".\RainPS.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RainPS.h"
 				>
 			</File>
 		</Filter>

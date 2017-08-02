@@ -14,8 +14,11 @@ struct stGUIControl
 
 	int m_xPos, m_yPos;      // 控件的XY坐标
 	int m_width, m_height;   // 控件的宽和高
+#ifdef UNICODE
+	TCHAR *m_text;
+#else
 	char *m_text;            // 指向静态控件文本字符的指针
-
+#endif
 	int m_upTex, m_downTex, m_overTex;  // 按钮的弹起、按下和停靠
 };
 
