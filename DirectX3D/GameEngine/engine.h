@@ -3,5 +3,5 @@
 
 #include "RenderInterface.h"
 #include "D3DRenderer.h"
-
+#include "MathLibrary.h"
 #endif

@@ -301,6 +301,70 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="math"
+			>
+			<File
+				RelativePath=".\mathDefines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mathLibrary.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Matrix.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Matrix.h"
+				>
+			</File>
+			<File
+				RelativePath=".\physics.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Plane.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Plane.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Polygon.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Polygon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Quaternion.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Quaternion.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Ray.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Ray.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Vector.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Vector.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

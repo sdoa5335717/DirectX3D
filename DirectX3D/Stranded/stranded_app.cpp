@@ -123,7 +123,7 @@ bool InitializeEngine()
 	{
 		return FALSE;
 	}
-	if (!g_Render->Initialize(WIN_WIDTH, WIN_HEIGHT, g_hWnd, FULLSCREEN))
+	if (!g_Render->Initialize(WIN_WIDTH, WIN_HEIGHT, g_hWnd, FULLSCREEN, UGP_MS_SAMPLES_4))
 	{
 		return FALSE;
 	}
@@ -165,11 +165,11 @@ void GameLoop()
 		return;
 	}
 
-	g_Render->StartRender(1,1,0);
+	//g_Render->StartRender(1,1,0);
 	// 绘制菜单界面
 	MainMenuRender();
 
-	g_Render->EndRendering();
+	//g_Render->EndRendering();
 }
 
 void GameShutDown()
