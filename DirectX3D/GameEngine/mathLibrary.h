@@ -10,6 +10,9 @@
 class CRay;       // 射线类
 class CPlane;     // 平面类
 class CPolygon;   // 多边形类
+class CBoundingBox;     // 边界框类
+class CBoundingSphere;  // 边界球类
+
 
 #include"Ray.h"
 #include"Plane.h"

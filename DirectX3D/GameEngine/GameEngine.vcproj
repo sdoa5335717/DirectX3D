@@ -227,6 +227,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\EngineInterface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\InputInterface.h"
+				>
+			</File>
+			<File
 				RelativePath=".\RenderInterface.h"
 				>
 			</File>
@@ -362,6 +370,42 @@
 			</File>
 			<File
 				RelativePath=".\Vector.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Font"
+			>
+			<File
+				RelativePath=".\D3DFont.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\D3DFont.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Geometry"
+			>
+			<File
+				RelativePath=".\BoundingGeometry.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BoundingGeometry.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Input"
+			>
+			<File
+				RelativePath=".\DirectInput.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DirectInput.h"
 				>
 			</File>
 		</Filter>

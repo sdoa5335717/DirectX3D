@@ -1,6 +1,7 @@
 #include "stranded_app.h"
 
 HWND g_hWnd;
+HINSTANCE g_hInstance;   // 程序的当前实例的句柄
 
 // GUI控件ID
 int g_mainGui = -1;     // 主菜单界面
@@ -8,9 +9,11 @@ int g_startGui = -1;    // 开始菜单界面
 int g_creditsGui = -1;  // 字幕菜单界面
 int g_currentGUI = GUI_MAIN_SCREEN;   // 当前菜单界面
 
+CInputInterface *g_InputSystem = NULL;   // 输入系统的抽象基类
+
 // 字体类型ID
 int g_arialID = -1;
-
+int g_RomanID=-1;
 // 鼠标的状态信息
 bool LMBDown = false;         // 光标左键是否被按下
 int	mouseX = 0, mouseY = 0;   // 鼠标指针位置(X和Y)
@@ -66,6 +69,8 @@ int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPSTR cmd, int show)
 	WNDCLASSEX wc = {sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc,
 					0L,0L, GetModuleHandle(NULL), NULL, NULL,
 					NULL, NULL, WINDOW_CLASS, NULL };
+
+	g_hInstance = h;
 
 	RegisterClassEx(&wc);
 
@@ -135,6 +140,22 @@ bool InitializeEngine()
 	{
 		return false;
 	}
+
+	if(! g_Render->CreateText(_T("Times New Roman"), 0, false, 16, g_RomanID) )
+	{
+		return false;
+	}
+
+	// 动态开辟输入系统CDirectInputSystem类对象
+	if (! CreateDIInput(&g_InputSystem, g_hWnd, g_hInstance, false) )
+	{
+		return false;
+	}
+
+	if(!g_InputSystem->Initialize())
+		return false;
+
+
 	return TRUE;
 }
 
@@ -165,10 +186,12 @@ void GameLoop()
 		return;
 	}
 
-	//g_Render->StartRender(1,1,0);
+	
 	// 绘制菜单界面
 	MainMenuRender();
 
+	//g_Render->StartRender(1,1,0);
+	//g_Render->DisplayFPS();
 	//g_Render->EndRendering();
 }
 
@@ -203,6 +226,15 @@ bool InitializeMainMenu()
 		UGPCOLOR_ARGB(255,255,255,255),
 		g_arialID)) return false;
 
+	if(!g_Render->AddGUIStaticText(
+		g_mainGui,
+		STATIC_TEXT_ID,
+		_T(""),
+		PERCENT_OF(WIN_WIDTH, 0.01),
+		PERCENT_OF(WIN_WIDTH, 0.05),
+		UGPCOLOR_ARGB(255,255,255,255),
+		g_RomanID)) return false;
+
 	if(!g_Render->AddGUIButton(g_mainGui, BUTTON_START_ID,
 		PERCENT_OF(WIN_WIDTH, 0.05), PERCENT_OF(WIN_HEIGHT, 0.40),
 		_T("menu/startUp.png"), _T("menu/StartOver.png"),
@@ -220,6 +252,15 @@ bool InitializeMainMenu()
 
 
 	// Set start screen elements.
+	if(!g_Render->AddGUIStaticText(
+		g_startGui,
+		STATIC_TEXT_ID,
+		_T(""),
+		PERCENT_OF(WIN_WIDTH, 0.01),
+		PERCENT_OF(WIN_WIDTH, 0.05),
+		UGPCOLOR_ARGB(255,255,255,255),
+		g_RomanID)) return false;
+
 	if(!g_Render->AddGUIButton(g_startGui, BUTTON_LEVEL_1_ID,
 		PERCENT_OF(WIN_WIDTH, 0.1), PERCENT_OF(WIN_HEIGHT, 0.15),
 		_T("menu/level1Up.png"), _T("menu/level1Over.png"),
@@ -232,6 +273,15 @@ bool InitializeMainMenu()
 
 
 	// Set credits screen elements.
+	if(!g_Render->AddGUIStaticText(
+		g_creditsGui,
+		STATIC_TEXT_ID,
+		_T(""),
+		PERCENT_OF(WIN_WIDTH, 0.01),
+		PERCENT_OF(WIN_WIDTH, 0.05),
+		UGPCOLOR_ARGB(255,255,255,255),
+		g_RomanID)) return false;
+
 	if(!g_Render->AddGUIStaticText(g_creditsGui, STATIC_TEXT_ID,
 		_T("Game Design -"),
 		PERCENT_OF(WIN_WIDTH, 0.1), PERCENT_OF(WIN_HEIGHT, 0.15),
@@ -369,6 +419,8 @@ void MainMenuRender()
 	if(!g_Render) return;
 
 	g_Render->StartRender(1, 1, 0);
+
+	//g_Render->DisplayFPS();
 
 	if(g_currentGUI == GUI_MAIN_SCREEN)
 		g_Render->ProcessGUI(g_mainGui, LMBDown, mouseX,

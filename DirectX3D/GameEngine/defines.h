@@ -13,6 +13,7 @@
 #define LIGHT_SPOT         3
 
 
+
 #define WinHWND HWND
 
 typedef long VextexType;
@@ -132,10 +133,20 @@ enum UGP_FOG_TYPE
 #define UGP_GUI_STATICTEXT 1    // 静态文本控件
 #define UGP_GUI_BUTTON     2    // 按钮控件
 #define UGP_GUI_BACKDROP   3    // 背景图控件
-
+#define UGP_GUI_FPS 4
 // 鼠标的状态
 #define UGP_BUTTON_UP      1    // 左键在按钮上弹起
 #define UGP_BUTTON_OVER    2    // 停靠在按钮上
 #define UGP_BUTTON_DOWN    3    // 左键在按钮上按下
+
+//-----------------------------------------------------------------------------
+// Miscellaneous helper functions
+//-----------------------------------------------------------------------------
+#define SAFE_DELETE(p)       { if(p) { delete (p);     (p)=NULL; } }
+#define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }
+#define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
+
+
+#define KEYS_SIZE 256
 
 #endif

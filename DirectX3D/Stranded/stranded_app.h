@@ -40,4 +40,5 @@ void MainMenuRender();
 #define BUTTON_BACK_ID     5
 #define BUTTON_LEVEL_1_ID  6
 
+#define STATIC_FPS_ID	7
 #endif

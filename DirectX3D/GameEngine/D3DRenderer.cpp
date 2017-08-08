@@ -2,6 +2,12 @@
 #include "D3DRenderer.h"
 #include <atlconv.h>
 
+CD3DFont* Font    = 0;
+DWORD FrameCnt    = 0;
+float TimeElapsed = 0;
+float FPS         = 0;
+TCHAR FPSString[9] = {};
+
 unsigned long CreateD3DFVF(int flags)
 {
 	unsigned long fvf = 0;
@@ -51,6 +57,9 @@ CD3DRenderer::CD3DRenderer()
 
 	m_screenHeight = 0;
 	m_screenWidth = 0;
+
+	m_fontFPS = NULL;
+
 }
 
 CD3DRenderer::~CD3DRenderer()
@@ -181,6 +190,18 @@ BOOL CD3DRenderer::Initialize(int w, int h, WinHWND mainWin, BOOL fullScreen, UG
 	{
 		return FALSE;
 	}
+
+	//m_fontFPS = new CD3DFont(_T("Times New Roman"), 16, 0);
+	//m_fontFPS->InitDeviceObjects( m_pDevice );
+	//m_fontFPS->RestoreDeviceObjects();
+	
+	/*m_fontFPS = new LPD3DXFONT[1];
+
+	if(FAILED(D3DXCreateFont(m_pDevice, size, 0, weight, 1, italic,
+		DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+		DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_DONTCARE, font,
+		&m_fontFPS[0]))) return false;*/
 
 	OneTimeInit();
 
@@ -1239,6 +1260,11 @@ void CD3DRenderer::ProcessGUI(
 
 			break;
 		}
+		case UGP_GUI_FPS:
+		{
+			DisplayFPS(pCnt->m_listID, pCnt->m_xPos, pCnt->m_yPos);
+			break;
+		}
 			// 按钮控件
 		case UGP_GUI_BUTTON:
 			status = UGP_BUTTON_UP;  // 设置按钮为弹起状态
@@ -1458,4 +1484,41 @@ void CD3DRenderer::SetDetailMapping()
 		D3DTA_TEXTURE);
 	m_pDevice->SetTextureStageState(1, D3DTSS_COLORARG2,
 		D3DTA_CURRENT);
+}
+
+void CD3DRenderer::DisplayFPS(int id, long x, long y)
+{
+	static float lastTime = (float)timeGetTime(); 
+	float currTime  = (float)timeGetTime();
+	float timeDelta = (currTime - lastTime)*0.001f;
+	//
+	// Update: Compute the frames per second.
+	//
+	FrameCnt++;
+	TimeElapsed += timeDelta;
+
+	if(TimeElapsed >= 1.0f)
+	{
+		FPS = (float)FrameCnt / TimeElapsed;
+
+
+		StringCchPrintf(FPSString, 9, _T("%f"), FPS);
+		FPSString[8] = _T('\0'); // mark end of string
+
+		TimeElapsed = 0.0f;
+		FrameCnt    = 0;
+	}
+
+	//
+	// Render
+	//
+
+	RECT FontPosition = {x, y, m_screenWidth, m_screenHeight};
+
+	HRESULT hr = S_OK;
+
+	hr = m_fonts[id]->DrawText(NULL, FPSString, -1, &FontPosition,
+		DT_SINGLELINE, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	lastTime = currTime;
 }

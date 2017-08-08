@@ -1,11 +1,6 @@
 #ifndef RENDERINTERFACE_H
 #define RENDERINTERFACE_H
 
-#ifdef GAMEENGINE_EXPORTS
-#define GAMEENGINE_API __declspec(dllexport)
-#else
-#define GAMEENGINE_API __declspec(dllimport)
-#endif
 
 #include "stdafx.h"
 #include "defines.h"
@@ -13,7 +8,7 @@
 #include "material.h"
 #include "GUI.h"
 #include "structs.h"
-
+#include "EngineInterface.h"
 struct stD3DStaticBuffer
 {
 
@@ -196,6 +191,8 @@ public:
 	// Ω˚”√ŒÌ
 	virtual void DisableFog() = 0;
 
+	// FPS
+	//virtual void DisplayFPS() = 0;
 
 protected:
 	int m_nSrceenWidth, m_nScreenHeight;

@@ -112,17 +112,25 @@ bool CGUISystem::AddStaticText(
 		return false;
 	}
 
+	// 获取文本字符个数
+	int len = 0;//strlen(text);
+	StringCchLength(text, STRSAFE_MAX_CCH, (size_t*)&len);
 	// 填充该控件对象的成员变量
-	m_controls[m_totalControls].m_type = UGP_GUI_STATICTEXT;   // 静态文本控件类型
+	if (!len)
+	{
+		m_controls[m_totalControls].m_type = UGP_GUI_FPS;
+	}
+	else
+	{
+		m_controls[m_totalControls].m_type = UGP_GUI_STATICTEXT;   // 静态文本控件类型
+	}
 	m_controls[m_totalControls].m_id = id;            // 控件ID
 	m_controls[m_totalControls].m_color = color;      // 文本颜色
 	m_controls[m_totalControls].m_xPos = x;           // 控件X坐标
 	m_controls[m_totalControls].m_yPos = y;           // 控件Y坐标
 	m_controls[m_totalControls].m_listID = fontID;    // 字体类型ID
 
-	// 获取文本字符个数
-	int len = 0;//strlen(text);
-	StringCchLength(text, STRSAFE_MAX_CCH, (size_t*)&len);
+
 	// 开辟存放文本字符的内存块
 #ifdef UNICODE
 	m_controls[m_totalControls].m_text = new TCHAR[len + 1];

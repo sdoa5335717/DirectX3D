@@ -3,6 +3,7 @@
 #include "defines.h"
 
 #include "RenderInterface.h"
+#include "D3DFont.h"
 
 #pragma comment(lib, "d3d9")
 #pragma comment(lib, "d3dx9")
@@ -67,6 +68,8 @@ public:
 	// 应用纹理
 	void ApplyTexture(int index, int texId);
 
+	// FPS
+	void DisplayFPS(int id, long x, long y);
 	
 #ifdef UNICODE
 	// 保存屏幕截图
@@ -160,6 +163,9 @@ private:
 	int m_totalFonts;
 
 	LPD3DXFONT *m_fonts;
+
+	ID3DXFont * m_fontFPS;
+	//CD3DFont* m_fontFPS;
 
 	int m_screenWidth;
 	int m_screenHeight;
