@@ -9,17 +9,6 @@
 
 CGameController *gThis = NULL;
 
-
-// 动态开辟输入系统CDirectInputSystem类对象
-BOOL CreateDIInput(CInputInterface **pObj, HWND hwnd, HINSTANCE hInst, bool exclusive)
-{
-	if(!*pObj) *pObj = new CDirectInputSystem(hwnd, hInst, exclusive);
-	else return false;
-
-	return true;
-}
-
-
 // 返回回调函数
 BOOL gJSEnumDeviceCallBack(const DIDEVICEINSTANCE *inst, void* pData)
 {
@@ -330,7 +319,7 @@ CDirectInputSystem::CDirectInputSystem(HWND hwnd, HINSTANCE hInst, bool exclusiv
 	{
 		m_keyboard = new CKeyboard(m_system, hwnd);
 		m_mouse = new CMouse(m_system, hwnd, exclusive);
-		m_gameController = new CGameController(m_system, hwnd);
+		//m_gameController = new CGameController(m_system, hwnd);
 	}
 }
 

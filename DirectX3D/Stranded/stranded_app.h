@@ -26,7 +26,7 @@ bool InitializeMainMenu();
 void MainMenuCallback(int id, int state);
 
 void MainMenuRender();
-
+void ProcessInput();
 // GUI主菜单界面的相关定义信息
 #define GUI_MAIN_SCREEN       1   // 主菜单界面
 #define GUI_START_SCREEN      2   // 开始菜单界面
@@ -41,4 +41,7 @@ void MainMenuRender();
 #define BUTTON_LEVEL_1_ID  6
 
 #define STATIC_FPS_ID	7
+
+#define UGP_LEFT_BUTTON    0
+#define UGP_RIGHT_BUTTON   1
 #endif

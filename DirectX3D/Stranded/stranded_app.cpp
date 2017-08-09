@@ -18,6 +18,10 @@ int g_RomanID=-1;
 bool LMBDown = false;         // 光标左键是否被按下
 int	mouseX = 0, mouseY = 0;   // 鼠标指针位置(X和Y)
 
+// Mouse button state information.
+bool g_LMBDown = false;
+int g_mouseX = 0, g_mouseY = 0;
+
 CRenderInterface *g_Render = NULL;
 
 LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -185,14 +189,9 @@ void GameLoop()
 	{
 		return;
 	}
-
-	
+	 ProcessInput();
 	// 绘制菜单界面
 	MainMenuRender();
-
-	//g_Render->StartRender(1,1,0);
-	//g_Render->DisplayFPS();
-	//g_Render->EndRendering();
 }
 
 void GameShutDown()
@@ -433,4 +432,40 @@ void MainMenuRender()
 		mouseY, MainMenuCallback);
 
 	g_Render->EndRendering();
+}
+
+void ProcessInput()
+{
+	if(!g_InputSystem) return;
+
+	// Updatea all devices.
+	g_InputSystem->UpdateDevices();
+
+
+	// Keyboard Input.
+	if(g_InputSystem->KeyUp(DIK_ESCAPE))
+	{
+		switch(g_currentGUI)
+		{
+		case GUI_MAIN_SCREEN:
+			PostQuitMessage(0);
+			break;
+
+		default:
+			g_currentGUI = GUI_MAIN_SCREEN;
+		}
+	}
+
+
+	// Mouse Input
+	POINT pos = { 0, 0 };
+	GetCursorPos(&pos);
+
+	g_mouseX = pos.x;
+	g_mouseY = pos.y;
+
+	if(g_InputSystem->MouseButtonDown(UGP_LEFT_BUTTON))
+		g_LMBDown = true;
+	if(!g_InputSystem->MouseButtonDown(UGP_LEFT_BUTTON))
+		g_LMBDown = false;
 }

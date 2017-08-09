@@ -8,7 +8,7 @@
 #include "material.h"
 #include "GUI.h"
 #include "structs.h"
-#include "EngineInterface.h"
+//#include "EngineInterface.h"
 struct stD3DStaticBuffer
 {
 
@@ -206,5 +206,5 @@ protected:
 	int m_totalGUIs;        // GUI系统CGUISystem的对象数量
 
 };
-GAMEENGINE_API BOOL CreateD3DRenderer(CRenderInterface** pObj);
+
 #endif

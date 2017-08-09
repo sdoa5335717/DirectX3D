@@ -25,19 +25,19 @@ inline unsigned long FtoDW(float val)
 	return *((unsigned long*)&val);
 }
 
-BOOL CreateD3DRenderer(CRenderInterface** pObj)
-{
-	if (!*pObj)
-	{
-		*pObj = new CD3DRenderer;
-	}
-	else
-	{
-		return FALSE;
-	}
-
-	return TRUE;
-}
+//BOOL CreateD3DRenderer(CRenderInterface** pObj)
+//{
+//	if (!*pObj)
+//	{
+//		*pObj = new CD3DRenderer;
+//	}
+//	else
+//	{
+//		return FALSE;
+//	}
+//
+//	return TRUE;
+//}
 
 CD3DRenderer::CD3DRenderer()
 {

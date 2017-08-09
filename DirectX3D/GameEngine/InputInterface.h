@@ -1,6 +1,6 @@
 #ifndef _UGP_INPUT_INTERFACE_H_
 #define _UGP_INPUT_INTERFACE_H_
-#include "EngineInterface.h"
+//#include "EngineInterface.h"
 // 输入系统基类
 class CInputInterface
 {
@@ -45,5 +45,5 @@ public:
 
 	virtual void Shutdown() = 0;
 };
-GAMEENGINE_API BOOL CreateDIInput(CInputInterface **pObj, HWND hwnd, HINSTANCE hInst, bool exclusive);
+
 #endif
